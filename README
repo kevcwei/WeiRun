@@ -1,8 +1,7 @@
-WeiRun is a synchronization tool that post your recent runs to the "Chinese Twitter" Sina Weibo.
+WeiRun is a synchronization tool that posts your recent runs to the "Chinese Twitter" Sina Weibo.
 The project is based on django, and it's heroku friendly.
 
-Since Nike hasn't released their API yet, I use the same hack as holman's fatigue <https://github.com/holman/fatigue> to
-access Nike+ user's information and run history.
+Since Nike hasn't released their API yet, I use the same hack as holman's fatigue <https://github.com/holman/fatigue> to access Nike+ user's information and run history.
 
 I'm a programmer and a beginner runner myself. Who said programmers can't run?
 Feel free to contact me at Kevin Wei<cwei@niubi.im>.
