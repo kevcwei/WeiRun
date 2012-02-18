@@ -12,7 +12,7 @@ class User:
             screen_name: The name displays on Nike+ website.
             distance_unit: Can be either mi or km.
             total_distance: Total distance in kilos.
-            plus_level: 0-based Nike+ level. Find more on http://bit.ly/12c47y. 
+            plus_level: 0-based Nike+ level. Find more on http://bit.ly/12c47y.
         """
         self.id = id
         self.screen_name = screen_name
