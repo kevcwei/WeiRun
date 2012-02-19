@@ -1,39 +1,6 @@
 import urllib2
 from lxml import etree
-
-
-class User:
-    """A class that wraps user's info."""
-
-    def __init__(self, id, screen_name, distance_unit, total_distance, plus_level):
-        """User constructor.
-
-        Args:
-            screen_name: The name displays on Nike+ website.
-            distance_unit: Can be either mi or km.
-            total_distance: Total distance in kilos.
-            plus_level: 0-based Nike+ level. Find more on http://bit.ly/12c47y. 
-        """
-        self.id = id
-        self.screen_name = screen_name
-        self.distance_unit = distance_unit
-        self.plus_level = plus_level
-        self._total_distance = total_distance
-        if self.distance_unit == 'km':
-            self.distance = self._total_distance
-        else:
-            self.distance = self._total_distance * 0.621371192        
-
-    def __str__(self):
-        """Converts the instance to a string.
-
-        Returns:
-            A pretty string of the user's info.
-        """
-        return "%s (Level %d) %.2f%s" % (self.screen_name,
-                                         self.plus_level,
-                                         self.distance,
-                                         self.distance_unit)
+from main.models import User
 
 
 class Nike:
@@ -59,9 +26,12 @@ class Nike:
         """Parsers user XML file and extracts useful info.
 
         Returns:
-            A instance of User class.
+            A instance of User class. If fails to get user info, returns None.
         """ 
         tree = etree.fromstring(self._get_user_xml())
+        status = tree.xpath('/plusService/status/text()')
+        if not status or status[0] == 'failure':
+            return None
         screen_name = tree.xpath('/plusService/userOptions/screenName/text()')
         if screen_name:
             screen_name = screen_name[0]
@@ -74,7 +44,8 @@ class Nike:
         plus_level = tree.xpath('/plusService/user/plusLevel/text()')
         if plus_level:
             plus_level = int(plus_level[0])
-        return User(self.id, screen_name, distance_unit, total_distance, plus_level)
+        return User(id=self.id, screen_name=screen_name, distance=total_distance,
+                    distance_unit=distance_unit, plus_level=plus_level)
 
     def _get_runs_xml(self):
         """Retrieves a list of runs in XML.
