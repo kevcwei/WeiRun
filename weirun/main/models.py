@@ -46,7 +46,7 @@ class Run(models.Model):
         Returns:
             A string of the url.
         """
-        return 'http://nikerunning.nike.com/nikeplus/v2/services/dashboard/og_run.jsp?activityid=%d&namespace=nikeapp&locale=zh_CN' % self.id
+        return 'http://nikerunning.nike.com/nikeplus/v2/services/dashboard/og_run.jsp?activityid=%s&namespace=nikeapp&locale=zh_CN' % self.id
 
     def __unicode__(self):
         """Converts the instance to a string.
@@ -54,5 +54,5 @@ class Run(models.Model):
         Returns:
             A string of the run.
         """
-        return u'%s %d' % (self.user.screen_name, self.distance)
+        return u'%s %.2f' % (self.user.screen_name, self.distance)
     

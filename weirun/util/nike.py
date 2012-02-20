@@ -1,4 +1,5 @@
 import urllib2
+from dateutil import parser
 from lxml import etree
 from main.models import User, Run
 
@@ -20,7 +21,21 @@ class Nike:
         Returns:
             A list of instances of Run class.
         """ 
-        pass
+        tree = etree.fromstring(self._get_runs_xml())
+        status = tree.xpath('/plusService/status/text()')
+        if not status or status[0] == 'failure':
+            return None
+        runs = []
+        user = self.user()
+        for run in tree.xpath('/plusService/runList/run'):
+            id = run.xpath('@id')[0]
+            start_time = parser.parse(run.findtext('startTime'))
+            duration = int(run.findtext('duration'))
+            distance = float(run.findtext('distance'))
+            calories = float(run.findtext('calories'))
+            runs.append(Run(id=id, start_time=start_time, duration=duration,
+                            distance=distance, calories=calories, user=user))
+        return runs
 
     def user(self):
         """Parsers user XML file and extracts useful info.
